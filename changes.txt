@@ -1,0 +1,2 @@
+1)error messages on login forms, register forms
+2)home page is wrong in mobile view

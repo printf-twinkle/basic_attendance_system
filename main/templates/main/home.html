@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<style type="text/css">
+	.my-grid{
+		border: 1px solid black;
+	}
+	.my-grid-item{
+		border: 1px solid black;
+	}
+	.cards-list {
+  z-index: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.card {
+  margin: 30px auto;
+  width: 300px;
+  height: 300px;
+  border-radius: 40px;
+box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.card .card_image {
+  width: inherit;
+  height: inherit;
+  border-radius: 40px;
+}
+
+.card .card_image img {
+  width: inherit;
+  height: inherit;
+  border-radius: 40px;
+  object-fit: cover;
+}
+
+.card .card_title {
+  text-align: center;
+  border-radius: 0px 0px 40px 40px;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  margin-top: -80px;
+  height: 40px;
+}
+
+.card:hover {
+  transform: scale(0.9, 0.9);
+  box-shadow: 5px 5px 30px 15px rgba(0,0,0,0.25), 
+    -5px -5px 30px 15px rgba(0,0,0,0.22);
+	cursor:none;
+}
+
+.title-white {
+  color: white;
+}
+
+.title-black {
+  color: black;
+}
+
+@media all and (max-width: 500px) {
+  .card-list {
+    /* On small screens, we are no longer using row direction but column */
+    flex-direction: column;
+  }
+}
+
+
+/*
+.card {
+  margin: 30px auto;
+  width: 300px;
+  height: 300px;
+  border-radius: 40px;
+  background-image: url('https://i.redd.it/b3esnz5ra34y.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-repeat: no-repeat;
+box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+  transition: 0.4s;
+}
+*/
+</style>
+
+<div class="container">
+
+
+
+  {% if  request.user.is_admin %}
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Serial No.</th>
+      <th scope="col">Name of Student</th>
+      <th scope="col">Attendance status</th>
+      <th scope="col">Request status</th>
+    </tr>
+  </thead>
+  <tbody>
+	{% for i in users %}
+		{% if i.is_student %}
+			<tr>
+			<th scope="row">1</th>
+			<td>{{i}}</td>
+			<td>{% if not i.is_present and i.is_request %}Pending {% elif not i.is_present and not i.is_request %}Marked Absent {% else %}Marked present{% endif %}</td>
+			<td>{% if not i.is_request %}<b>Not turned on</b> {% else %}Request sent{% endif %}</td>
+			 
+			</tr>
+			{% endif %}
+	{% endfor %}
+
+{% endif %}
+  </tbody>
+</table>
+
+ 
+
+
+
+
+
+
+
+
+	
+  {% if request.user.is_teacher %}
+  <table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Serial No.</th>
+      <th scope="col">Name of Student</th>
+      <th scope="col">Request status</th>
+	   <th scope="col">Final attendance</th>
+    </tr>
+  </thead>
+  <tbody>
+	{% for i in users %}
+		{% if i.is_student %}
+			<tr>
+			<th scope="row">1</th>
+			<td>{{i}}</td>
+			<td>{% if not i.is_request %}Not requested {% else %}Request sent{% endif %}</td>
+			 <td>{% if not i.is_present and i.is_request %}<a style="color: darkolivegreen; text-decoration: none;" href="{% url 'give_attendance' i.email %}">Give attendance</a> {% elif not i.is_present and not i.is_request %}<b style="color: red;">Absent</b> {% else %}<b style="color: green;">Present</b>{% endif %}</td>
+			</tr>
+			{% endif %}
+	{% endfor %}
+
+{% endif %}
+  </tbody>
+</table>
+  
+
+{% if request.user.is_student %}
+
+<div class="cards-list">
+  
+	 
+	  
+	  <div class="card 4">
+	  <div class="card_image">
+		<img src="https://media.giphy.com/media/LwIyvaNcnzsD6/giphy.gif" />
+		</div>
+	  </div>
+	
+	</div>
+	<div class="container text-center font-weight-bold">
+{% if not user_id.is_present and not user_id.is_request %}<a style=" color: darkolivegreen; text-decoration: none;" href="{% url 'request_attendance' user_id.email %}"><h1>Request for attendance</h1></a> {% elif user_id.is_present %}<h1>You have been marked Present.</h1>{% elif not user_id.is_present and user_id.is_request %}<h2>You have already sent a request, wait for your attendance acceptance.</h2>{% endif %}
+</div>
+{% endif %}
+
+
+</div>
+{% endblock content %}

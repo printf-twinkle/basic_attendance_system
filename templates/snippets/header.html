@@ -1,0 +1,125 @@
+{% load static %}
+
+<!-- Header -->
+<div class="d-flex flex-column flex-lg-row p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+
+	<!-- MEDIUM+ SCREENS -->
+	<div class="d-none d-md-flex flex-row my-auto flex-grow-1 align-items-center">
+		<h5 class="mr-3 font-weight-normal justify-content-start">
+			<a class="p-2 text-dark" style="text-decoration: none;" href="{% url 'home' %}">Home</a>
+		</h5>
+
+		{% if request.user.is_admin %}
+		<h5 class="mr-3 font-weight-normal justify-content-start">
+			<a class="p-2 text-dark" style="text-decoration: none;" href="{% url 'student_register' %}">Student Register</a>
+		</h5>
+		<h5 class="mr-3 font-weight-normal justify-content-start">
+			<a class="p-2 text-dark" style="text-decoration: none;" href="{% url 'teacher_register' %}">Teacher Register</a>
+		</h5>
+		 {% endif %}	
+
+		 {% if request.user.is_authenticated %}
+		<h5 class="mr-3 font-weight-normal justify-content-start">
+			<a class="p-2 text-dark" style="text-decoration: none;" href="{% url 'logout' %}">Logout</a>
+		</h5>
+		{% endif %}
+
+		<div class="d-flex flex-row-reverse flex-grow-1">
+			<nav class="">
+				{% if request.user.is_authenticated %}
+					<div class="dropdown dropleft show p-2">
+						<div class="d-flex flex-row">
+
+							<div class="btn-group dropleft">
+							{% if request.user.is_student %}
+							Logged in as <b> Student</b>
+
+							{% elif request.user.is_teacher %}
+							Logged in as <b> Teacher </b>
+
+							{% elif request.user.is_admin %}
+							Logged in as <b> Admin </b>
+							{% endif %}
+								 
+							</div>
+
+							 
+						</div>
+						
+					</div>
+				{% else %}
+					 <b>You are not logged in</b>
+				{% endif %}	
+			</nav>
+		</div>
+	</div>
+	<!-- END MEDIUM+ SCREENS -->
+
+	<!-- SMALL SCREENS -->
+	 <div id="icon"><a href="#" onclick="toggleNavbar()"><i style="color: black;" class="fa fa-bars"></i></a></div>
+	<div  class="collapse navbar-collapse d-flex d-md-none flex-column my-auto align-items-center">
+		<ul style="list-style: none;font-size: larger;text-align: center; padding-left: 5%; width: 100%;" id="hamburger">
+		<li style="display: block; text-align: left;" class="font-weight-normal">
+		<a class="p-2 text-dark" style="text-decoration: none;" href="{% url 'home' %}">Home</a>
+		</li>
+
+		{% if request.user.is_admin %}
+		<li style="display: block; text-align: left;" class="mr-3 font-weight-normal justify-content-start">
+			<a class="p-2 text-dark" style="text-decoration: none;" href="{% url 'student_register' %}">Student Register</a>
+		</li>
+		<li style="display: block; text-align: left;" class="mr-3 font-weight-normal justify-content-start">
+			<a class="p-2 text-dark" style="text-decoration: none;" href="{% url 'teacher_register' %}">Teacher Register</a>
+		</li>
+		 {% endif %}
+		 
+		 {% if request.user.is_authenticated %}
+		<li style="display: block; text-align: left;" class="mr-3 font-weight-normal justify-content-start">
+			<a class="p-2 text-dark" style="text-decoration: none;" href="{% url 'logout' %}">Logout</a>
+		</li>
+		{% endif %}
+	</ul>
+		 
+		<div class="d-flex flex-row-reverse flex-grow-1">
+			<nav class="">
+				{% if request.user.is_authenticated %}
+				<div class="dropdown dropleft p-2 mt-2">
+					<div class="d-flex flex-row">
+						<div class="btn-group dropleft">
+							{% if request.user.is_student %}
+							Logged in as <b> Student</b>
+
+							{% elif request.user.is_teacher %}
+							Logged in as <b> Teacher </b>
+
+							{% elif request.user.is_admin %}
+							Logged in as <b> Admin </b>
+							{% endif %}
+							 </div>
+							 </div>
+							 </div>
+				{% else %}
+					 <b>You are not logged in</b>
+				{% endif %}	
+			</nav>
+	  	</div>
+	</div>
+	<!-- END SMALL SCREENS -->
+</div>
+
+<script>
+ele = document.getElementById('hamburger');
+function toggleNavbar() {
+  // if(count%2==0)
+  if(ele.style.display == 'none')
+  {
+    ele.style.display = 'block';
+    ele.style.height = 'auto';
+    
+  } 
+  else{
+    ele.style.display = 'none';
+  }
+}
+</script>
+
+ 
